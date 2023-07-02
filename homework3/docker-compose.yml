@@ -1,0 +1,88 @@
+version: '3'
+services:
+  telegraf:
+    image: telegraf:1.27
+    env_file: configuration.env
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - influxdb
+    links:
+      - influxdb
+    ports:
+      - '127.0.0.1:8125:8125/udp'
+
+  influxdb:
+    image: influxdb:2.7-alpine
+    env_file: configuration.env
+    ports:
+      - '8086:8086'
+    volumes:
+      - influxdbv2:/var/lib/influxdb2:rw
+
+  grafana:
+    image: grafana/grafana:10.0.1
+    depends_on:
+      - influxdb
+    env_file: configuration.env
+    links:
+      - influxdb
+    ports:
+      - '127.0.0.1:3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+      - ./grafana/dashboards/:/var/lib/grafana/dashboards/
+
+  mongodb:
+    image: mongo:6-jammy
+    env_file: configuration.env
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+  elasticsearch:
+    image: elasticsearch:8.8.1
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    healthcheck:
+      test: curl --fail http://localhost:9200 || exit 1
+      interval: 60s
+      retries: 5
+      start_period: 20s
+      timeout: 10s
+
+  nginx:
+    image: nginx:1.25.1
+    ports: 
+      - '8888:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - java-service
+    restart: on-failure
+
+  java-service:
+    image: nikit0s/projector-hsa-homework3:latest
+    ports: 
+      - '8080:8080'
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch:9200
+      - SPRING_DATA_MONGODB_HOST=mongodb
+    depends_on:
+      - elasticsearch
+      - mongodb
+    restart: on-failure
+
+
+
+volumes:
+  grafana_data: {}
+  mongo_data: {}
+  influxdbv2: {}

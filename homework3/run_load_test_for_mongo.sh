@@ -1,0 +1,1 @@
+siege -c100 -t1M 'http://localhost:8888/mongodb/customer POST {}'
