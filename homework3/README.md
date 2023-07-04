@@ -39,6 +39,7 @@ Longest transaction:	       13.44
 Shortest transaction:	        0.00
 ```
 ![elasticsearch metrics](img/elasic_trainer_endpoint.png)
+![elastic specific metrics](img/elastic_spec_metrics.png)
 ![java-service metrics](img/java-service_trainer_endpoint.png)
 
 ---
@@ -60,6 +61,7 @@ Longest transaction:	       19.54
 Shortest transaction:	        0.00
 ```
 ![mongodb metrics](img/mongodb_customer_endpoint.png)
+![mongo specific metrics](img/mongo_spec_metrics.png)
 ![java-service metrics](img/java-service_customer_endpoint.png)
 
 ---
