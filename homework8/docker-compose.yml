@@ -1,0 +1,18 @@
+version: '2'
+services:
+  image-server:
+    image: nginx
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./nginx_conf/imageserver_nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./img:/usr/share/nginx/html/images
+
+  webserver:
+    image: openresty/openresty:alpine
+    ports:
+      - 8000:8000
+    volumes:
+      - ./nginx_conf/webserver_nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./lua_scripts:/data/nginx/scripts
+
