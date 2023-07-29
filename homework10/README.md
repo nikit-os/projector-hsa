@@ -14,6 +14,8 @@ docker-compose up
 | Dirty Read          |        ✅        |      ❌       |       ❌        |      ❌      |
 | Non-repeatable read |        ✅        |      ✅       |       ❌        |      ❌      |
 | Phantom read        |        ✅        |      ✅       |       ❌        |      ❌      |
+| Lost update         |        ✅        |      ✅       |       ❌        |      ❌      |
+|                     |                  |               |                 |              |
 
 ### Postgres
 |                     | READ UNCOMMITTED | READ COMMITED | REPEATABLE READ | SERIALIZABLE |
@@ -21,6 +23,8 @@ docker-compose up
 | Dirty Read          |        ❌        |      ❌       |       ❌        |      ❌      |
 | Non-repeatable read |        ✅        |      ✅       |       ❌        |      ❌      |
 | Phantom read        |        ✅        |      ✅       |       ❌        |      ❌      |
+| Lost update         |        ✅        |      ✅       |       ❌        |      ❌      |
+|                     |                  |               |                 |              |
 
 
 ## Testing MySQL
